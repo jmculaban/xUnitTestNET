@@ -162,5 +162,32 @@ namespace GameEngine.Tests
             // Loop through all the weapon and check if no null or set to whitespace
             Assert.All(sut.Weapons, weapon => Assert.False(string.IsNullOrWhiteSpace(weapon)));
         }
+
+        // Assert events are raised
+        [Fact]
+        public void RaiseSleptEvent()
+        {
+            PlayerCharacter sut = new PlayerCharacter();
+
+            // handler expression to attach to PlayerSlept event
+            // handler expression to dettach from PlayerSlept event
+            // action that should cause this event to be raised
+            Assert.Raises<EventArgs>(
+                handler => sut.PlayerSlept += handler,
+                handler => sut.PlayerSlept -= handler,
+                () => sut.Sleep());
+        }
+
+        // notify property change
+        [Fact]
+        public void RaisePropertyChangeEvent()
+        {
+            PlayerCharacter sut = new PlayerCharacter();
+
+            // (object to raised the property change event (sut),
+            //      name of property where change property should raised (Health),
+            //      action that should cause the event to fire
+            Assert.PropertyChanged(sut, "Health", () => sut.TakeDamage(10));
+        }
     }
 }
